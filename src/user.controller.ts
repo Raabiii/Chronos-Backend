@@ -8,11 +8,15 @@ export class UsersController {
   @Get()
   async getUsers() {
     const supabase = this.supabaseService.getClient();
-    const { data, error } = await supabase.from('users').select('*');
+    const { data, error } = await supabase
+      .from('Users')
+      .select('*, Appointments(*)');
 
     if (error) {
       throw new Error(error.message);
     }
+
+    console.log(data[0].id);
 
     return data;
   }

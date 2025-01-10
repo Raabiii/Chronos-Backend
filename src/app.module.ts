@@ -3,9 +3,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SupabaseModule } from './supabase/supabase.module';
 import { UsersController } from './user.controller';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [SupabaseModule],
+  imports: [
+    SupabaseModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
   controllers: [AppController, UsersController],
   providers: [AppService],
 })
