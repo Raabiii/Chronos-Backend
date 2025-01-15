@@ -22,7 +22,12 @@ export class AppointmentGateway
   constructor(private readonly appointmentService: AppointmentService) {}
 
   handleConnection(client: Socket) {
-    const token = client.handshake.headers['authorization']?.split(' ')[1]; // Assuming 'Bearer token'
+    console.log(
+      'Client connected:',
+      client.handshake.headers?.authorization?.split(' ')[1],
+    );
+    const token = client.handshake.headers?.authorization?.split(' ')[1];
+
     if (!token) {
       console.log('No token provided');
       client.emit('error', 'No token provided');
@@ -34,6 +39,7 @@ export class AppointmentGateway
       const configService = new ConfigService();
       const secret = configService.get<string>('JWT_SECRET');
       const decoded = jwt.verify(token, secret);
+
       // console.log('JWT Decoded:', decoded);
     } catch (error) {
       console.log('Invalid token');
@@ -52,8 +58,8 @@ export class AppointmentGateway
     this.server.emit('appointmentUpdate', message);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @SubscribeMessage('getAppointments')
+  // @UseGuards(JwtAuthGuard)
+  @SubscribeMessage('list')
   async getAppointments(client: Socket, payload: any) {
     return await this.appointmentService.getAppointments(
       Array.isArray(client.handshake.headers['email'])
