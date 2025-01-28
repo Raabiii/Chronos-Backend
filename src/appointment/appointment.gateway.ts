@@ -12,7 +12,7 @@ import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 
-@WebSocketGateway(3001, { namespace: 'appointment', cors: { origin: '*' } })
+@WebSocketGateway({ namespace: 'appointment', cors: { origin: '*' } })
 export class AppointmentGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
